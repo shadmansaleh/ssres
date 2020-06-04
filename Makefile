@@ -1,8 +1,8 @@
-MAIN = sscres
-SRCS =   ./getData.c ./dataGatherer.c ./handleData.c ./itoa.c ./main.c
+MAIN = ssres
+SRCS =   ./getData.c ./dataGatherer.c ./main.c ./handleData.c ./itoa.c ./qsort.c ./readData.c
 INCLUDES =  
 LIBS =  
-CFLAGS = -Wall -g 
+CFLAGS = -Wall -O2 
 LFLAGS =  
 CC = gcc
 OBJS = $(SRCS:.c=.o)

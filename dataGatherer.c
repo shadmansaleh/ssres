@@ -22,11 +22,11 @@ void dataGatherer(int rollLower,int rollHeigher){
 	int soc;
 	char *host="sresult.bise-ctg.gov.bd";
 	char *port="80";
-	FILE *fp=fopen("result.html","w");
-//	FILE *fp=stdout;
+//	FILE *fp=fopen("result.html","w");
+	FILE *fp=fopen("rawData","r");//stdout;
 	memset(sendData,0,sendDataSize);
 
-	htmlStart(fp);
+//	htmlStart(fp);
 
 	soc=opensocket(host,port);
 	sprintf(sendData,"GET /individual/index.php HTTP/1.1\r\nHost: sresult.bise-ctg.gov.bd\r\n\r\n");
@@ -58,7 +58,7 @@ void dataGatherer(int rollLower,int rollHeigher){
 	//	close(soc);
 	}
 	close(soc);
-	htmlEnd(fp);
+//	htmlEnd(fp);
 	fclose(fp);
 	return;
 }

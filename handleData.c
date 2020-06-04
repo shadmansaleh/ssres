@@ -50,7 +50,7 @@ void handleData(FILE *fp,char *recvData){
 	memset(&res,0,sizeof(res));
 
 	setupstruct(recvData,&res);
-	writeData(fp,&res,1);
+	writeData(fp,&res,0);
 //	printf("%s\n",recvData);
 	return;
 }
