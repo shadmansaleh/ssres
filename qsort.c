@@ -1,28 +1,28 @@
 #include <stdio.h>
 
 //void swap(int[],int,int);
-void quickSort(void *v[],int left,int right,int (*eval)(void*,void*));
+void quickSort(void *v[],int left,int right,int (*eval)(const void*,const void*));
 //int eval(char *i,char *j);
 
-void swap(void *v[],int i1,int i2){
+static void qswap(void *v[],int i1,int i2){
 	void *temp=v[i1];
 	v[i1]=v[i2];
 	v[i2]=temp;
 }
 
-void quickSort(void *v[],int left,int right,int (*eval)(void*,void*)){
+void quickSort(void *v[],int left,int right,int (*eval)(const void*,const void*)){
 	int i,last;
 	if(right<=left)
 		return;
-	swap(v,left,((left+right)/2));
+	qswap(v,left,((left+right)/2));
 	last=left;
 	i=left+1;
 	for(;i<=right;i++){
 		if(eval(v[i],v[left]) < 0){
-			swap(v,i,++last);
+			qswap(v,i,++last);
 		}
 	}
-	swap(v,left,last);
+	qswap(v,left,last);
 	quickSort(v,left,(last-1),eval);
 	quickSort(v,(last+1),right,eval);
 }

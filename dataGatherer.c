@@ -20,12 +20,15 @@ void dataGatherer(int rollLower,int rollHeigher){
 	char sendData[sendDataSize];
 	char recvData[recvDataSize];
 	int soc;
+	int retry=0;
+	char *w=NULL,*recvBack=NULL;
 	char *host="sresult.bise-ctg.gov.bd";
 	char *port="80";
 //	FILE *fp=fopen("result.html","w");
-	FILE *fp=fopen("rawData","r");//stdout;
+	FILE *fp=fopen("./rawData","w");//stdout;
 	memset(sendData,0,sendDataSize);
 
+	int k=0;
 //	htmlStart(fp);
 
 	soc=opensocket(host,port);
@@ -44,14 +47,38 @@ void dataGatherer(int rollLower,int rollHeigher){
 	memmove(Cookie,c,(d-c));
 //	printf("Got Cookie=%s",Cookie);
 	for(int i=rollLower;i<=rollHeigher;i++){
-		
+redo:		
 	//	soc=opensocket(host,port);
 		printf("Feteching Roll: %d ...",i);
+//redo2:
 		sprintf(sendData,"POST /individual/result.php HTTP/1.1\r\nHost: sresult.bise-ctg.gov.bd\r\nCookie: %s\r\nUser-Agent: HTTPTool/1.0\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: 11\r\n\r\nroll=%d\r\n",Cookie,i);
-		if(getData(soc,sendData,recvData,recvDataSize)==-1){
-			close(soc);
-			exit(1);
+		if((k=getData(soc,sendData,recvData,recvDataSize))==-1){
+			if(retry<6){
+				printf("\nRetring....");
+				retry++;
+				goto redo;
+			}
+			else continue;
+	//		close(soc);
+	//		exit(1);
 		}
+/*		else if(k==-2){
+				if(retry<10){
+	//			printf("\nRetring....");
+				retry++;
+				goto redo2;
+			}
+			else continue;
+		
+		}*/
+		retry=0;
+		recvBack=recvData;
+		while((w=strstr(recvBack,"\r\n"))){
+			recvBack=w+1;
+			memmove(w,w+2,strlen((w+2)));
+		}
+		recvBack=NULL;
+		w=NULL;
 		printf("\tWriting...");
 		handleData(fp,recvData);
 		printf("Done\n");

@@ -58,179 +58,188 @@ void handleData(FILE *fp,char *recvData){
 void setupstruct(char *Data,result *res){
 	static int sn=1;
 	char *c=strstr(Data,"<!DOCTYPE");
+	if(c != NULL)
+		Data=c;
 	char val[valSize];
 	memset(val,0,valSize);
-	if((c=getValue(c,"Roll No",val))!=NULL){
+	if((c=getValue(Data,"Roll No",val))!=NULL){
 		memmove(res->roll_no,val,strlen(val));
-		Data=c;
+	}
+/*		Data=c;
 	}else{
 		c=Data;
-	}
+	}*/
 	memset(val,0,valSize);
-	if((c=getValue(c,"Name",val))!=NULL){
+	if((c=getValue(Data,"Name",val))!=NULL){
 		memmove(res->name,val,strlen(val));
-		Data=c;
-	}else{
-		c=Data;
 	}
+//		Data=c;
+//	}else{
+//		c=Data;
+//	}
 	memset(val,0,valSize);
-	if((c=getValue(c,"Board",val))!=NULL){
+	if((c=getValue(Data,"Board",val))!=NULL){
 		memmove(res->board,val,strlen(val));
-		Data=c;
-	}else{
-		c=Data;
 	}
+//		Data=c;
+//	}else{
+//		c=Data;
+//	}
 	memset(val,0,valSize);
-	if((c=getValue(c,"Father's Name",val))!=NULL){
+	if((c=getValue(Data,"Father's Name",val))!=NULL){
 		memmove(res->fname,val,strlen(val));
-		Data=c;
-	}else{
-		c=Data;
 	}
+//		Data=c;
+//	}else{
+//		c=Data;
+//	}
 	memset(val,0,valSize);
-	if((c=getValue(c,"Group",val))!=NULL){
+	if((c=getValue(Data,"Group",val))!=NULL){
 		memmove(res->group,val,strlen(val));
-		Data=c;
+	}/*		Data=c;
 	}else{
 		c=Data;
-	}
+	}*/
 	memset(val,0,valSize);
-	if((c=getValue(c,"Mother's Name",val))!=NULL){
+	if((c=getValue(Data,"Mother's Name",val))!=NULL){
 		memmove(res->mname,val,strlen(val));
-		Data=c;
+	}/*	Data=c;
 	}else{
 		c=Data;
-	}
+	}*/
 	memset(val,0,valSize);
-	if((c=getValue(c,"Session",val))!=NULL){
+	if((c=getValue(Data,"Session",val))!=NULL){
 		memmove(res->session,val,strlen(val));
-		Data=c;
+	}/*	Data=c;
 	}else{
 		c=Data;
-	}
+	}*/
 	memset(val,0,valSize);
-	if((c=getValue(c,"Reg. NO",val))!=NULL){
+	if((c=getValue(Data,"Reg. NO",val))!=NULL){
 		memmove(res->regno,val,strlen(val));
-		Data=c;
+	}/*	Data=c;
 	}else{
 		c=Data;
-	}
+	}*/
 	memset(val,0,valSize);
-	if((c=getValue(c,"Type",val))!=NULL){
+	if((c=getValue(Data,"Type",val))!=NULL){
 		memmove(res->type,val,strlen(val));
-		Data=c;
+	}/*	Data=c;
 	}else{
 		c=Data;
-	}
+	}*/
 	memset(val,0,valSize);
-	if((c=getValue(c,"Institute",val))!=NULL){
+	if((c=getValue(Data,"Institute",val))!=NULL){
 		memmove(res->institue,val,strlen(val));
-		Data=c;
+	}/*	Data=c;
 	}else{
 		c=Data;
-	}
+	}*/
 	memset(val,0,valSize);
-	if((c=getValue(c,"Result",val))!=NULL){
+	if((c=getValue(Data,"Result",val))!=NULL){
 		memmove(res->gpa,val+4,strlen(val+4));
-		Data=c;
+	}/*	Data=c;
 	}else{
 		c=Data;
-	}
+	}*/
 	memset(val,0,valSize);
-	if((c=getValue(c,"DATE OF BIRTH",val))!=NULL){
+	if((c=getValue(Data,"DATE OF BIRTH",val))!=NULL){
 		memmove(res->dob,val,strlen(val));
-		Data=c;
+	}/*	Data=c;
 	}else{
 		c=Data;
-	}
+	}*/
 	memset(val,0,valSize);
-	if((c=getValue(c,"BANGLA-I",val))!=NULL){
+	if((c=getValue(Data,"BANGLA-I",val))!=NULL){
 		memmove(res->bangla,val,strlen(val));
-		Data=c;
+	}/*	Data=c;
 	}else{
 		c=Data;
-	}
+	}*/
 	memset(val,0,valSize);
-	if((c=getValue(c,"ENGLISH-I",val))!=NULL){
+	if((c=getValue(Data,"ENGLISH-I",val))!=NULL){
 		memmove(res->english,val,strlen(val));
-		Data=c;
+	}/*	Data=c;
 	}else{
 		c=Data;
-	}
+	}*/
 	memset(val,0,valSize);
-	if((c=getValue(c,"MATHEMATICS",val))!=NULL){
+	if((c=getValue(Data,"MATHEMATICS",val))!=NULL){
 		memmove(res->math,val,strlen(val));
-		Data=c;
+	}/*	Data=c;
 	}else{
 		c=Data;
-	}
+	}*/
 	memset(val,0,valSize);
-	if((c=getValue(c,"BANGLADESH AND GLOBAL STUDIES",val))!=NULL){
+	if((c=getValue(Data,"BANGLADESH AND GLOBAL STUDIES",val))!=NULL){
 		memmove(res->bgs,val,strlen(val));
-		Data=c;
+	}/*	Data=c;
 	}else{
 		c=Data;
-	}
+	}*/
 	memset(val,0,valSize);
-	if((c=getValue(c,"ISLAM AND MORAL EDUCATION",val))!=NULL){
+	if((c=getValue(Data,"ISLAM AND MORAL EDUCATION",val))!=NULL){
 		memmove(res->rs,val,strlen(val));
-		Data=c;
+	}/*	Data=c;
 	}
-	else if((c=getValue(c,"HINDU RELIGION AND MORAL EDUCATION",val))!=NULL){
+	else{
+		c=Data;
+	}*/
+	if((c=getValue(Data,"HINDU RELIGION AND MORAL EDUCATION",val))!=NULL){
 		memmove(res->rs,val,strlen(val));
-		Data=c;
+	}/*	Data=c;
 	}else{
 		c=Data;
-	}
+	}*/
 	memset(val,0,valSize);
-	if((c=getValue(c,"PHYSICS",val))!=NULL){
+	if((c=getValue(Data,"PHYSICS",val))!=NULL){
 		memmove(res->physics,val,strlen(val));
-		Data=c;
+	}/*	Data=c;
 	}else{
 		c=Data;
-	}
+	}*/
 	memset(val,0,valSize);
-	if((c=getValue(c,"CHEMISTRY",val))!=NULL){
+	if((c=getValue(Data,"CHEMISTRY",val))!=NULL){
 		memmove(res->chemestry,val,strlen(val));
-		Data=c;
+	}/*	Data=c;
 	}else{
 		c=Data;
-	}
+	}*/
 	memset(val,0,valSize);
-	if((c=getValue(c,"BIOLOGY",val))!=NULL){
+	if((c=getValue(Data,"BIOLOGY",val))!=NULL){
 		memmove(res->biology,val,strlen(val));
-		Data=c;
+	}/*	Data=c;
 	}else{
 		c=Data;
-	}
+	}*/
 	memset(val,0,valSize);
-	if((c=getValue(c,"Information And Communication Technology",val))!=NULL){
+	if((c=getValue(Data,"Information And Communication Technology",val))!=NULL){
 		memmove(res->ict,val,strlen(val));
-		Data=c;
+	}/*	Data=c;
 	}else{
 		c=Data;
-	}
+	}*/
 	memset(val,0,valSize);
-	if((c=getValue(c,"HIGHER MATHEMATICS",val))!=NULL){
+	if((c=getValue(Data,"HIGHER MATHEMATICS",val))!=NULL){
 		memmove(res->hm,val,strlen(val));
-		Data=c;
+	}/*	Data=c;
 	}else{
 		c=Data;
-	}
+	}*/
 	memset(val,0,valSize);
-	if((c=getValue(c,"PHYSICAL EDUCATION, HEALTH AND SPORTS",val))!=NULL){
+	if((c=getValue(Data,"PHYSICAL EDUCATION, HEALTH AND SPORTS",val))!=NULL){
 		memmove(res->pehs,val,strlen(val));
-		Data=c;
+	}/*	Data=c;
 	}else{
 		c=Data;
-	}
+	}*/
 	memset(val,0,valSize);
-	if((c=getValue(c,"Career Education",val))!=NULL){
+	if((c=getValue(Data,"Career Education",val))!=NULL){
 		memmove(res->cc,val,strlen(val));
-		Data=c;
+	}/*	Data=c;
 	}else{
 		c=Data;
-	}
+	}*/
 	int total=0;
 	total+=getnumber(res->bangla);
 	total+=getnumber(res->english);
@@ -260,7 +269,9 @@ void setupstruct(char *Data,result *res){
 
 void writeData(FILE *fp,result *res,int html){
 	if(html==0){
-	fprintf(fp,"[{Name=\"%s\",Roll.No=\"%s\",Board=\"%s\",Father'sName=\"%s\",Group=\"%s\",Mother'sName=\"%s\",Session=\"%s\",Reg.No=\"%s\",Type=\"%s\",Institue=\"%s\",GPA=\"%s\",DataOfBirth=\"%s\",BANGLA=\"%s\",ENGLISH=\"%s\",MATHEMATICS=\"%s\",BANGLADESHANDGLOBALSTUDIES=\"%s\",RELIGIOUSSTADIES=\"%s\",PHYSICS=\"%s\",CHEMESTRY=\"%s\",BIOLOGY=\"%s\",InformationAndCommunicationTechnology=\"%s\",HIGHERMATHEMATICS=\"%s\",PHYSICALEDUCATION,HEALTHANDSPORTS=\"%s\",CareerEducation=\"%s\",TotalWithoutCA=\"%s\",Total=\"%s\"}]\n",res->name,res->roll_no,res->board,res->fname,res->group,res->mname,res->session,res->regno,res->type,res->institue,res->gpa,res->dob,res->bangla,res->english,res->math,res->bgs,res->rs,res->physics,res->chemestry,res->biology,res->ict,res->hm,res->pehs,res->cc,res->tow,res->to);
+	fprintf(fp,"[{Name=\"%s\",Roll.No=\"%s\",Board=\"%s\",Father'sName=\"%s\",Group=\"%s\",Mother'sName=\"%s\",Session=\"%s\",Reg.No=\"%s\",Type=\"%s\",Institution=\"%s\",GPA=\"%s\",DataOfBirth=\"%s\",BANGLA=\"%s\",ENGLISH=\"%s\",MATHEMATICS=\"%s\",BANGLADESHANDGLOBALSTUDIES=\"%s\",RELIGIOUSSTADIES=\"%s\",PHYSICS=\"%s\",CHEMESTRY=\"%s\",BIOLOGY=\"%s\",InformationAndCommunicationTechnology=\"%s\",HIGHERMATHEMATICS=\"%s\",PHYSICALEDUCATIONHEALTHANDSPORTS=\"%s\",CareerEducation=\"%s\",TWCA=\"%s\",Total=\"%s\"}]\n",res->name,res->roll_no,res->board,res->fname,res->group,res->mname,res->session,res->regno,res->type,res->institue,res->gpa,res->dob,res->bangla,res->english,res->math,res->bgs,res->rs,res->physics,res->chemestry,res->biology,res->ict,res->hm,res->pehs,res->cc,res->tow,res->to);
+
+	//printf("[{Name=\"%s\",Roll.No=\"%s\",Board=\"%s\",Father'sName=\"%s\",Group=\"%s\",Mother'sName=\"%s\",Session=\"%s\",Reg.No=\"%s\",Type=\"%s\",Institue=\"%s\",GPA=\"%s\",DataOfBirth=\"%s\",BANGLA=\"%s\",ENGLISH=\"%s\",MATHEMATICS=\"%s\",BANGLADESHANDGLOBALSTUDIES=\"%s\",RELIGIOUSSTADIES=\"%s\",PHYSICS=\"%s\",CHEMESTRY=\"%s\",BIOLOGY=\"%s\",InformationAndCommunicationTechnology=\"%s\",HIGHERMATHEMATICS=\"%s\",PHYSICALEDUCATIONHEALTHANDSPORTS=\"%s\",CareerEducation=\"%s\",TotalWithoutCA=\"%s\",Total=\"%s\"}]\n",res->name,res->roll_no,res->board,res->fname,res->group,res->mname,res->session,res->regno,res->type,res->institue,res->gpa,res->dob,res->bangla,res->english,res->math,res->bgs,res->rs,res->physics,res->chemestry,res->biology,res->ict,res->hm,res->pehs,res->cc,res->tow,res->to);
 	return;
 	}
 	else if(html==1){
@@ -270,10 +281,10 @@ void writeData(FILE *fp,result *res,int html){
 }
 
 void htmlStart(FILE *fp){
-	fprintf(fp,"<!DOCTYPE html>\n\n<html>\n\n<head>\n\t<title>SSC Result</title>\n</head>\n\n\n<body>\n\n\t<H3>SSC RESULT</H3>\n\n\t<table border=\"1\" width=\"80%%\">\n\t<tr>\n\n<th>Serial No</th>\n<th>Name</th>\n<th>Roll. No</th>\n<th>Group</th>\n<th>Inistitue</th>\n<th>GPA</th>\n<th>BANGLA</th>\n<th>ENGLISH</th>\n<th>MATHEMATICS</th>\n<th>SOCIAL STUDIES</th>\n<th>RELIGIOUS STUDIES</th>\n<th>PHYSICS</th>\n<th>CHEMESTRY</th>\n<th>BIOLOGY</th>\n<th>ICT</th>\n<th>HIGHER MATH</th>\n<th>PHYSICAL EDUCATION</th>\n<th>CAREER EDUCATION</th>\n<th>Total without CA</th>\n<th>Total</th>\n\n</tr>\n");
+	fprintf(fp,"<!DOCTYPE html>\n\n<html>\n\n<head>\n\t<title>SSC Result</title>\n</head>\n\n\n<body>\n\n\t<H3>SSC RESULT</H3>\n\n\t<CENTER>\n\n\t<table border=\"1\" width=\"80%%\">\n\t<tr>\n\n<th>Serial No</th>\n<th>Name</th>\n<th>Roll. No</th>\n<th>Group</th>\n<th>Inistitution</th>\n<th>GPA</th>\n<th>BANGLA</th>\n<th>ENGLISH</th>\n<th>MATHEMATICS</th>\n<th>SOCIAL STUDIES</th>\n<th>RELIGIOUS STUDIES</th>\n<th>PHYSICS</th>\n<th>CHEMESTRY</th>\n<th>BIOLOGY</th>\n<th>ICT</th>\n<th>HIGHER MATH</th>\n<th>PHYSICAL EDUCATION</th>\n<th>CAREER EDUCATION</th>\n<th>Total without CA</th>\n<th>Total</th>\n\n</tr>\n");
 }
 void htmlEnd(FILE *fp){
-	fprintf(fp,"\n\n\t</table>\n</body>");
+	fprintf(fp,"\n\n\t</table>\n\n</CENTER>\n</body>");
 }
 int getnumber(char *s){
 	char *c=strdup(s);

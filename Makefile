@@ -2,9 +2,9 @@ MAIN = ssres
 SRCS =   ./getData.c ./dataGatherer.c ./main.c ./handleData.c ./itoa.c ./qsort.c ./readData.c
 INCLUDES =  
 LIBS =  
-CFLAGS = -Wall -O2 
+CFLAGS = -Wall -g 
 LFLAGS =  
-CC = gcc
+CC = gcc-9
 OBJS = $(SRCS:.c=.o)
 .PHONY: depend clean
 all:	$(MAIN)

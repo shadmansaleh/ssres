@@ -34,6 +34,10 @@ int opensocket(char *host,char *port){
 		exit(1);
 	}
 	int s = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+	struct timeval tv;
+	tv.tv_sec = 5;
+	tv.tv_usec = 0;
+	setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
 	if (s == -1)
 		error("Can't open socket");
 	int serv=connect(s,res->ai_addr,res->ai_addrlen);
@@ -67,14 +71,23 @@ s:
 	memset(recvData,'\0',recvSize);
 	c=0;
 	char *buffer=recvData;
-	while((c=recv(soc,buffer,recvSize,0))!=0){
+//	sleep(2);
+	while((c=read(soc,buffer,recvSize))!=0){
 		if(c<0){
  			printf("read error");
 			return -1;
 		}
 		if(strstr(buffer,"</html>"))
 			break;
+/*		else{
+			char b[2];
+	//		sleep(2);
+			while((recv(soc,b,1,MSG_DONTWAIT))>0);
+			return -2;
+		}*/
+//		c-=10;
 		buffer+=c;
+		recvSize-=c;
 		c=0;
 	}
 	if(!strcmp(buff,"[null]")){
