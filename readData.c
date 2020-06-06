@@ -165,6 +165,7 @@ result *readData(char *fname,int *size){
 		i++;
 	}
 	*size=lineno;
+//	fclose(fp);
 	return rs;
 }
 

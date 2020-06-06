@@ -131,22 +131,26 @@ int main(int argc,char *argv[]){
 	int len=0;
 	printf("Reading...");
 	result *res=readData("rawData",&len);
-	printf("Sorting...");
+	printf("\nSorting...");
 	qsort((void*)res,(len),sizeof(*res),sortAlg);
 //	quickSort((void*)res,0,(len),sortTotalNum);
 	int i;
 	for(i=0;i<len;i++)
 		res[i].sn=i+1;
 	printf("Done\nWriting...");
-	FILE *fp=fopen(out,"w");
-	if(fp==NULL)
+//	int f=open(out,O_RDWR|O_CREAT);
+//	printf("f=%d\n",f);
+//	FILE *fp2=fdopen(f,"w");
+	FILE *fp2=fopen(out,"w");
+	if(fp2==NULL)
 		error("Unable to open output file.");
-	htmlStart(fp);
+	htmlStart(fp2);
 	for(i=0;i<len;i++)
-		writeData(fp,&res[i],1);
-	htmlEnd(fp);
+		writeData(fp2,&res[i],1);
+	htmlEnd(fp2);
 	printf("Done\n");
-	fclose(fp);
+	fclose(fp2);
+//	close(f);
 	free(res);
 	return 0;
 }

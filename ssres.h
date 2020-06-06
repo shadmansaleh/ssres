@@ -58,3 +58,6 @@ void getStructData(result *res,FILE *fp);
 int getDatawithnc(char *sendData,char *recvData,int recvSize);
 
 
+int htoi(char *hax);
+
+

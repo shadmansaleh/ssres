@@ -253,7 +253,7 @@ void writeData(FILE *fp,result *res,int html){
 }
 
 void htmlStart(FILE *fp){
-	fprintf(fp,"<!DOCTYPE html>\n\n<html>\n\n<head>\n\t<title>SSC Result</title>\n</head>\n\n\n<body>\n\n\t<H3>SSC RESULT</H3>\n\n\t<CENTER>\n\n\t<table border=\"1\" width=\"80%%\">\n\t<tr>\n\n<th>Serial No</th>\n<th>Name</th>\n<th>Roll. No</th>\n<th>Group</th>\n<th>Inistitution</th>\n<th>GPA</th>\n<th>BANGLA</th>\n<th>ENGLISH</th>\n<th>MATHEMATICS</th>\n<th>SOCIAL STUDIES</th>\n<th>RELIGIOUS STUDIES</th>\n<th>PHYSICS</th>\n<th>CHEMESTRY</th>\n<th>BIOLOGY</th>\n<th>ICT</th>\n<th>HIGHER MATH</th>\n<th>PHYSICAL EDUCATION</th>\n<th>CAREER EDUCATION</th>\n<th>Total without CA</th>\n<th>Total</th>\n\n</tr>\n");
+	fprintf(fp,"<!DOCTYPE html>\n\n<html>\n\n<head>\n\t<title>SSC Result</title>\n<script>\nth {\nfloat:none\nposition:relative\n}\nth {\nfloat:none\nposition:relative\n}\n</script>\n</head>\n\n\n<body>\n\n\t<H3>SSC RESULT</H3>\n\n\t<CENTER>\n\n\t<table border=\"1\" width=\"80%%\">\n\t<tr>\n\n<th>Serial No</th>\n<th>Name</th>\n<th>Roll. No</th>\n<th>Group</th>\n<th>Inistitution</th>\n<th>GPA</th>\n<th>BANGLA</th>\n<th>ENGLISH</th>\n<th>MATHEMATICS</th>\n<th>SOCIAL STUDIES</th>\n<th>RELIGIOUS STUDIES</th>\n<th>PHYSICS</th>\n<th>CHEMESTRY</th>\n<th>BIOLOGY</th>\n<th>ICT</th>\n<th>HIGHER MATH</th>\n<th>PHYSICAL EDUCATION</th>\n<th>CAREER EDUCATION</th>\n<th>Total without CA</th>\n<th>Total</th>\n\n</tr>\n");
 }
 void htmlEnd(FILE *fp){
 	fprintf(fp,"\n\n\t</table>\n\n</CENTER>\n</body>");

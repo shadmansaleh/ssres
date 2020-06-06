@@ -1,5 +1,5 @@
 MAIN = ssres
-SRCS =   ./getData.c ./dataGatherer.c ./main.c ./handleData.c ./itoa.c ./qsort.c ./readData.c
+SRCS =   ./getData.c ./dataGatherer.c ./main.c ./handleData.c ./itoa.c ./qsort.c ./readData.c ./htoi.c
 INCLUDES =  
 LIBS =  
 CFLAGS = -Wall -g 
