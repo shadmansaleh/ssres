@@ -1,50 +1,19 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
+#include "ssres.h"
 
 #define valSize 100
 
 
-typedef struct {
-	char name[100];
-	char roll_no[10];
-	char board[20];
-	char fname[100];
-	char mname[100];
-	char group[10];
-	char regno[20];
-	char session[10];
-	char type[10];
-	char institue[100];
-	char gpa[10];
-	char dob[15];
-	char bangla[10];
-	char english[10];
-	char math[10];
-	char bgs[10];
-	char rs[10];
-	char physics[10];
-	char chemestry[10];
-	char biology[10];
-	char ict[10];
-	char hm[10];
-	char pehs[10];
-	char cc[10];
-	char tow[10];
-	char to[10];
-	int sn;
-}result;
-
-
-char * getValue(char *Data,char *key,char *value);
+/*char * getValue(char *Data,char *key,char *value);
 int getnumber(char *s);
 void setupstruct(char *Data,result *res);
 char* itoa(int num, char* str, int base);
 void writeData(FILE *fp,result *res,int html);
 void htmlStart(FILE *fp);
 void htmlEnd(FILE *fp);
-
+*/
 void handleData(FILE *fp,char *recvData){
 	result res;
 	memset(&res,0,sizeof(res));
@@ -178,7 +147,7 @@ void setupstruct(char *Data,result *res){
 		c=Data;
 	}*/
 	memset(val,0,valSize);
-	if((c=getValue(Data,"ISLAM AND MORAL EDUCATION",val))!=NULL){
+	if((c=getValue(Data,"BUDDHIST RELIGION AND MORAL EDUCATION",val))!=NULL){
 		memmove(res->rs,val,strlen(val));
 	}/*	Data=c;
 	}
@@ -191,6 +160,9 @@ void setupstruct(char *Data,result *res){
 	}else{
 		c=Data;
 	}*/
+	if((c=getValue(Data,"ISLAM AND MORAL EDUCATION",val))!=NULL){
+		memmove(res->rs,val,strlen(val));
+	}
 	memset(val,0,valSize);
 	if((c=getValue(Data,"PHYSICS",val))!=NULL){
 		memmove(res->physics,val,strlen(val));

@@ -3,42 +3,14 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
-typedef struct {
-	char name[100];
-	char roll_no[10];
-	char board[20];
-	char fname[100];
-	char mname[100];
-	char group[10];
-	char regno[20];
-	char session[10];
-	char type[10];
-	char institue[100];
-	char gpa[10];
-	char dob[15];
-	char bangla[10];
-	char english[10];
-	char math[10];
-	char bgs[10];
-	char rs[10];
-	char physics[10];
-	char chemestry[10];
-	char biology[10];
-	char ict[10];
-	char hm[10];
-	char pehs[10];
-	char cc[10];
-	char tow[10];
-	char to[10];
-	int sn;
-}result;
+#include "ssres.h"
 
 
-result *readData(char *fname,int *size);
+/*result *readData(char *fname,int *size);
 int countlines(char *fname);
 void getStructData(result *res,FILE *fp);
 void error(char *msg); 
-
+*/
 
 int countlines(char *fname){
 	FILE *fp=fopen(fname,"r");
@@ -64,10 +36,10 @@ void getStructData(result *res,FILE *fp){
 //	fscanf(fp,"[{Name=\"%s\",Roll.No=\"%s\",Board=\"%s\",Father'sName=\"%s\",Group=\"%s\",Mother'sName=\"%s\",session=\"%s\",Reg.No=\"%s\",Type=\"%s\",Institue=\"%s\",GPA=\"%s\",DataOfBirth=\"%s\",BANGLA=\"%s\",ENGLISH=\"%s\",MATHEMATICS=\"%s\",BANGLADESHANDGLOBALSTUDIES=\"%s\",RELIGIOUSSTADIES=\"%s\",PHYSICS=\"%s\",CHEMESTRY=\"%s\",BIOLOGY=\"%s\",InformationAndCommunicationTechnology=\"%s\",HIGHERMATHEMATICS=\"%s\",PHYSICALEDUCATIONHEALTHANDSPORTS=\"%s\",CareerEducation=\"%s\",TotalWithoutCA=\"%s\",Total=\"%s\"}]\n",res->name,res->roll_no,res->board,res->fname,res->group,res->mname,res->session,res->regno,res->type,res->institue,res->gpa,res->dob,res->bangla,res->english,res->math,res->bgs,res->rs,res->physics,res->chemestry,res->biology,res->ict,res->hm,res->pehs,res->cc,res->tow,res->to);
 	
 	char *getStructDataVal(char *str,char *key,char *val);
-	char line[1025];
+	char line[5120];
 	char val[150];
-	memset(line,0,1025);
-	fgets(line,1024,fp);
+	memset(line,0,5120);
+	fgets(line,5125,fp);
 	char *l=line;
 //	char lineBack[1025];
 //	memset(lineBack,0,1025);

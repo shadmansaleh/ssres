@@ -1,47 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "ssres.h"
 
-typedef struct {
-	char name[100];
-	char roll_no[10];
-	char board[20];
-	char fname[100];
-	char mname[100];
-	char group[10];
-	char regno[20];
-	char session[10];
-	char type[10];
-	char institue[100];
-	char gpa[10];
-	char dob[15];
-	char bangla[10];
-	char english[10];
-	char math[10];
-	char bgs[10];
-	char rs[10];
-	char physics[10];
-	char chemestry[10];
-	char biology[10];
-	char ict[10];
-	char hm[10];
-	char pehs[10];
-	char cc[10];
-	char tow[10];
-	char to[10];
-	int sn;
-}result;
-
-
-
-
-void dataGatherer(int rollLower,int rollHeigher);
+/*void dataGatherer(int rollLower,int rollHeigher);
 int opensocket(char *host,char *port);
 result *readData(char *fname,int *size);
 void writeData(FILE *fp,result *res,int html);
 void htmlStart(FILE *fp);
 void htmlEnd(FILE *fp);
 void quickSort(void *v[],int left,int right,int (*eval)(const void*,const void*));
+void error(char *msg); 
+*/
 
 int sortTotalNumWCA(const void *res1,const void *res2){
 	result *r1=(result*)res1;
@@ -82,8 +52,9 @@ int main(int argc,char *argv[]){
 	int help=0;
 	int ch;
 	int alg=0;
+	char out[200]="/sdcard/result.html";
 	int(*sortAlg)(const void*,const void*);
-	while((ch=getopt(argc,argv,":f:t:hs01234"))!=-1){
+	while((ch=getopt(argc,argv,":f:t:o:hs01234"))!=-1){
 		switch(ch){
 			case 'f':
 				from=atoi(optarg);
@@ -96,6 +67,9 @@ int main(int argc,char *argv[]){
 				break;
 			case 'h':
 				help=1;
+				break;
+			case 'o':
+				strcpy(out,optarg);
 				break;
 			case '1':
 				alg=1;
@@ -164,7 +138,9 @@ int main(int argc,char *argv[]){
 	for(i=0;i<len;i++)
 		res[i].sn=i+1;
 	printf("Done\nWriting...");
-	FILE *fp=fopen("result.html","w");
+	FILE *fp=fopen(out,"w");
+	if(fp==NULL)
+		error("Unable to open output file.");
 	htmlStart(fp);
 	for(i=0;i<len;i++)
 		writeData(fp,&res[i],1);
