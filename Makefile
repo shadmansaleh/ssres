@@ -1,7 +1,7 @@
 MAIN = ssres
-SRCS =   ./getData.c ./dataGatherer.c ./main.c ./handleData.c ./itoa.c ./qsort.c ./readData.c ./htoi.c
+SRCS =   ./getData.c ./dataGatherer.c ./main.c ./handleData.c ./itoa.c ./readData.c ./checkAvailable.c 
 INCLUDES =  
-LIBS =  
+LIBS = -lsqlite3 
 CFLAGS = -Wall -g 
 LFLAGS =  
 CC = gcc-9
@@ -22,3 +22,8 @@ depend:	$(SRCS)
 
 # DO NOT DELETE THIS LINE -- make depend needs it
 
+getData.o: ssres.h
+dataGatherer.o: ssres.h
+main.o: ssres.h
+handleData.o: ssres.h
+readData.o: ssres.h

@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <sqlite3.h>
+
 typedef struct {
 	char name[100];
 	char roll_no[100];
@@ -39,7 +41,7 @@ int opensocket(char *host,char *port);
 
 void htmlStart(FILE *fp);
 void htmlEnd(FILE *fp);
-void handleData(FILE *fp,char *recvData);
+void handleData(char *recvData,sqlite3 *db);
 
 
 void dataGatherer(int rollLower,int rollHeigher);
@@ -59,5 +61,12 @@ int getDatawithnc(char *sendData,char *recvData,int recvSize);
 
 
 int htoi(char *hax);
+
+void writeIntoDB(result *res,sqlite3 *db);
+int callback(void *NotUsed, int argc, char **argv, char **azColName);
+
+void removeGrade(char *val);
+
+int checkAvailable(sqlite3 *db,int roll);
 
 

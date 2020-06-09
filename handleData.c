@@ -2,9 +2,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ssres.h"
-
+#include <sqlite3.h>
 #define valSize 100
 
+
+//int callback(void *NotUsed, int argc, char **argv, char **azColName);
 
 /*char * getValue(char *Data,char *key,char *value);
 int getnumber(char *s);
@@ -14,12 +16,14 @@ void writeData(FILE *fp,result *res,int html);
 void htmlStart(FILE *fp);
 void htmlEnd(FILE *fp);
 */
-void handleData(FILE *fp,char *recvData){
+void  handleData(char *recvData,sqlite3 *db){
 	result res;
 	memset(&res,0,sizeof(res));
 
 	setupstruct(recvData,&res);
-	writeData(fp,&res,0);
+	if(db)
+		writeIntoDB(&res,db);
+//	writeData(fp,&res,0);
 //	printf("%s\n",recvData);
 	return;
 }
@@ -118,100 +122,143 @@ void setupstruct(char *Data,result *res){
 	}else{
 		c=Data;
 	}*/
+	do{
 	memset(val,0,valSize);
 	if((c=getValue(Data,"BANGLA-I",val))!=NULL){
+		removeGrade(val);
 		memmove(res->bangla,val,strlen(val));
-	}/*	Data=c;
+	}
+	}while(atoi(res->bangla) > 200);
+	/*	Data=c;
 	}else{
 		c=Data;
 	}*/
+	do{
 	memset(val,0,valSize);
 	if((c=getValue(Data,"ENGLISH-I",val))!=NULL){
+		removeGrade(val);
 		memmove(res->english,val,strlen(val));
 	}/*	Data=c;
 	}else{
 		c=Data;
 	}*/
+	}while(atoi(res->english) > 200);
+	do{
 	memset(val,0,valSize);
 	if((c=getValue(Data,"MATHEMATICS",val))!=NULL){
+		removeGrade(val);
 		memmove(res->math,val,strlen(val));
 	}/*	Data=c;
 	}else{
 		c=Data;
 	}*/
+	}while(atoi(res->math) > 100);
+	do{
 	memset(val,0,valSize);
 	if((c=getValue(Data,"BANGLADESH AND GLOBAL STUDIES",val))!=NULL){
+		removeGrade(val);
 		memmove(res->bgs,val,strlen(val));
 	}/*	Data=c;
 	}else{
 		c=Data;
 	}*/
+	}while(atoi(res->bgs) > 100);
+	do{
 	memset(val,0,valSize);
 	if((c=getValue(Data,"BUDDHIST RELIGION AND MORAL EDUCATION",val))!=NULL){
+		removeGrade(val);
 		memmove(res->rs,val,strlen(val));
 	}/*	Data=c;
 	}
 	else{
 		c=Data;
 	}*/
-	if((c=getValue(Data,"HINDU RELIGION AND MORAL EDUCATION",val))!=NULL){
+	else if((c=getValue(Data,"HINDU RELIGION AND MORAL EDUCATION",val))!=NULL){
+		removeGrade(val);
 		memmove(res->rs,val,strlen(val));
 	}/*	Data=c;
 	}else{
 		c=Data;
 	}*/
-	if((c=getValue(Data,"ISLAM AND MORAL EDUCATION",val))!=NULL){
+	else if((c=getValue(Data,"ISLAM AND MORAL EDUCATION",val))!=NULL){
+		removeGrade(val);
 		memmove(res->rs,val,strlen(val));
 	}
+	}while(atoi(res->rs) > 100);
+	do{
 	memset(val,0,valSize);
 	if((c=getValue(Data,"PHYSICS",val))!=NULL){
+		removeGrade(val);
 		memmove(res->physics,val,strlen(val));
 	}/*	Data=c;
 	}else{
 		c=Data;
 	}*/
+	}while(atoi(res->physics) > 100);
+	do{
 	memset(val,0,valSize);
 	if((c=getValue(Data,"CHEMISTRY",val))!=NULL){
+		removeGrade(val);
 		memmove(res->chemestry,val,strlen(val));
 	}/*	Data=c;
 	}else{
 		c=Data;
 	}*/
+	}while(atoi(res->chemestry) > 100);
+	do{
 	memset(val,0,valSize);
 	if((c=getValue(Data,"BIOLOGY",val))!=NULL){
+		removeGrade(val);
 		memmove(res->biology,val,strlen(val));
 	}/*	Data=c;
 	}else{
 		c=Data;
 	}*/
+	}while(atoi(res->biology) > 100);
+	do{
 	memset(val,0,valSize);
 	if((c=getValue(Data,"Information And Communication Technology",val))!=NULL){
+		removeGrade(val);
 		memmove(res->ict,val,strlen(val));
 	}/*	Data=c;
 	}else{
 		c=Data;
 	}*/
+	}while(atoi(res->ict) > 100);
+	do{
 	memset(val,0,valSize);
 	if((c=getValue(Data,"HIGHER MATHEMATICS",val))!=NULL){
+		removeGrade(val);
+		memmove(res->hm,val,strlen(val));
+	}
+	else if((c=getValue(Data,"AGRICULTURE STUDIES",val))!=NULL){
+		removeGrade(val);
 		memmove(res->hm,val,strlen(val));
 	}/*	Data=c;
 	}else{
 		c=Data;
 	}*/
+	}while(atoi(res->hm) > 100);
+	do{
 	memset(val,0,valSize);
 	if((c=getValue(Data,"PHYSICAL EDUCATION, HEALTH AND SPORTS",val))!=NULL){
+		removeGrade(val);
 		memmove(res->pehs,val,strlen(val));
 	}/*	Data=c;
 	}else{
 		c=Data;
 	}*/
+	}while(atoi(res->pehs) > 100);
+	do{
 	memset(val,0,valSize);
 	if((c=getValue(Data,"Career Education",val))!=NULL){
+		removeGrade(val);
 		memmove(res->cc,val,strlen(val));
 	}/*	Data=c;
 	}else{
 		c=Data;
 	}*/
+	}while(atoi(res->cc) > 100);
 	int total=0;
 	total+=getnumber(res->bangla);
 	total+=getnumber(res->english);
@@ -252,8 +299,26 @@ void writeData(FILE *fp,result *res,int html){
 	}
 }
 
+void writeIntoDB(result *res,sqlite3 *db){
+	char sql[5121];
+	int rc;
+	char *zErrMsg;
+	memset(sql,0,5121);
+	static int id=1;
+	sprintf(sql,"INSERT INTO SCIENCE (Name,Roll_NO,Board,Fathers_Name,_Group,Mothers_Name,Session,Registration_NO,Type,Institution,GPA,Date_of_Birth,Bangla,English,Mathmatics,Bangladesh_and_Global_Studies,Religious_Studies,Physics,Chemestry,Biology,ICT,Optional,Physical_Education,Career_Education,Total_without_CA,Total)"\
+			"VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s');",res->name,res->roll_no,res->board,res->fname,res->group,res->mname,res->session,res->regno,res->type,res->institue,res->gpa,res->dob,res->bangla,res->english,res->math,res->bgs,res->rs,res->physics,res->chemestry,res->biology,res->ict,res->hm,res->pehs,res->cc,res->tow,res->to);
+	rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
+	if( rc != SQLITE_OK ){
+  	    fprintf(stderr, "SQL error: %s\n", zErrMsg);
+  	    sqlite3_free(zErrMsg);
+	   } else {
+		   id++;
+  //	    fprintf(stdout, "Records created successfully\n");
+	   }
+	return ;
+}
 void htmlStart(FILE *fp){
-	fprintf(fp,"<!DOCTYPE html>\n\n<html>\n\n<head>\n\t<title>SSC Result</title>\n<script>\nth {\nfloat:none\nposition:relative\n}\nth {\nfloat:none\nposition:relative\n}\n</script>\n</head>\n\n\n<body>\n\n\t<H3>SSC RESULT</H3>\n\n\t<CENTER>\n\n\t<table border=\"1\" width=\"80%%\">\n\t<tr>\n\n<th>Serial No</th>\n<th>Name</th>\n<th>Roll. No</th>\n<th>Group</th>\n<th>Inistitution</th>\n<th>GPA</th>\n<th>BANGLA</th>\n<th>ENGLISH</th>\n<th>MATHEMATICS</th>\n<th>SOCIAL STUDIES</th>\n<th>RELIGIOUS STUDIES</th>\n<th>PHYSICS</th>\n<th>CHEMESTRY</th>\n<th>BIOLOGY</th>\n<th>ICT</th>\n<th>HIGHER MATH</th>\n<th>PHYSICAL EDUCATION</th>\n<th>CAREER EDUCATION</th>\n<th>Total without CA</th>\n<th>Total</th>\n\n</tr>\n");
+	fprintf(fp,"<!DOCTYPE html>\n\n<html>\n\n<head>\n\t<title>SSC Result</title>\n<script>\nth {\nfloat:none\nposition:relative\n}\ntd {\nfloat:none\nposition:relative\n}\n</script>\n</head>\n\n\n<body>\n\n\t<H3>SSC RESULT</H3>\n\n\t<CENTER>\n\n\t<table border=\"1\" width=\"80%%\">\n\t<tr>\n\n<th>Serial No</th>\n<th>Name</th>\n<th>Roll. No</th>\n<th>Group</th>\n<th>Inistitution</th>\n<th>GPA</th>\n<th>BANGLA</th>\n<th>ENGLISH</th>\n<th>MATHEMATICS</th>\n<th>SOCIAL STUDIES</th>\n<th>RELIGIOUS STUDIES</th>\n<th>PHYSICS</th>\n<th>CHEMESTRY</th>\n<th>BIOLOGY</th>\n<th>ICT</th>\n<th>HIGHER MATH</th>\n<th>PHYSICAL EDUCATION</th>\n<th>CAREER EDUCATION</th>\n<th>Total without CA</th>\n<th>Total</th>\n\n</tr>\n");
 }
 void htmlEnd(FILE *fp){
 	fprintf(fp,"\n\n\t</table>\n\n</CENTER>\n</body>");
@@ -268,6 +333,23 @@ int getnumber(char *s){
 	return num;
 }
 
+void removeGrade(char *val){
+//	printf("\n\tchanging \'%s\' to ",val);
+	char *c=val;
+	int s;
+	while(!(*(c)<='9'&& *(c)>='0')) c++;
+	if(c>val){
+		s=strlen(c);
+		memmove(val,c,s);
+		*(val+s)='\0';
+	}
+	while(*(c)<='9'&& *(c)>='0') c++;
+	*c='\0';
+	if(!strcmp(val,"")){
+		memmove(val,"0\0",2);
+	}
+//	printf("\'%s\'\n",val);
+}
 
 char * getValue(char *Data,char *key,char *value){
 	char mKey[100];
@@ -282,7 +364,24 @@ char * getValue(char *Data,char *key,char *value){
 		end=start;
 		while(*start!='>')	start--;
 		memmove(value,start+1,(end-start-1));
+		char *c;
+		int len=0;
+		while((c=strchr(value,'\''))){
+			len=strlen(c+1);
+			memmove(c,c+1,len);
+			*(c+len)='\0';
+		}
 		return end+5;
 	}
 	return NULL;
 }
+
+int callback(void *NotUsed, int argc, char **argv, char **azColName) {
+   int i;
+   for(i = 0; i<argc; i++) {
+      printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+   }
+   printf("\n");
+   return 0;
+}
+
