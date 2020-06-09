@@ -69,4 +69,5 @@ void removeGrade(char *val);
 
 int checkAvailable(sqlite3 *db,int roll);
 
+void giveResult(char *dbName,char *sortcondition,char* limitcondition);
 

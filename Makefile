@@ -1,5 +1,5 @@
 MAIN = ssres
-SRCS =   ./getData.c ./dataGatherer.c ./main.c ./handleData.c ./itoa.c ./readData.c ./checkAvailable.c 
+SRCS =   ./getData.c ./dataGatherer.c ./main.c ./handleData.c ./itoa.c ./readData.c ./checkAvailable.c ./giveResult.c 
 INCLUDES =  
 LIBS = -lsqlite3 
 CFLAGS = -Wall -g 

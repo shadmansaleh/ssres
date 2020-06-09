@@ -13,6 +13,7 @@ void dataGatherer(int rollLower,int rollHeigher){
 	char recvData[recvDataSize];
 	int soc;
 	int retry=0;
+	int len=0;
 	char *w1=NULL,*recvBack=NULL,*w2=NULL;
 	char *host="sresult.bise-ctg.gov.bd";
 	char *port="80";
@@ -154,8 +155,12 @@ redo:
 				
 			}
 			else if((w2-w1)<7&&(w2-w1)>2){
-				memmove(w1,w2+2,(w2+2-w1));
-				recvBack-=(w2-w1+2);
+				len=strlen(w2+2);
+				memmove(w1,w2+2,len);
+				memset((w1+len),0,strlen(w1+len));
+				recvBack=w1;
+				len=0;
+				//recvBack-=(w2-w1+2);
 				w2=NULL;
 				w1=NULL;
 			}
@@ -175,7 +180,7 @@ redo:
 		fputs(fc,fn);
 		fc=NULL;
 		fclose(fn);
-		memset(fname,0,100)*/;
+		memset(fname,0,100);*/
 //		printf("\tWriting...");
 		handleData(recvData,db);
 		printf("Done\n");

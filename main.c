@@ -14,7 +14,10 @@ void quickSort(void *v[],int left,int right,int (*eval)(const void*,const void*)
 void error(char *msg); 
 */
 
-int sortTotalNumWCA(const void *res1,const void *res2){
+FILE *outFile=NULL;
+
+
+/*int sortTotalNumWCA(const void *res1,const void *res2){
 	result *r1=(result*)res1;
 	result *r2=(result*)res2;
 	return (atoi(r2->tow) - atoi(r1->tow));
@@ -38,7 +41,7 @@ int sortGPA(const void *res1,const void *res2){
 	result *r1=(result*)res1;
 	result *r2=(result*)res2;
 	return (atoi(r2->gpa) - atoi(r1->gpa));
-}
+}*/
 /*int sortTotalNumWCA(const void *res1,const void *res2){
 	result *r1=(result*)res1;
 	result *r2=(result*)res2;
@@ -49,11 +52,16 @@ int sortGPA(const void *res1,const void *res2){
 int main(int argc,char *argv[]){
 	int from=0;
 	int to=0;
-//	int onlySort=0;
+	int onlySort=0;
 	int help=0;
+	int reverse=0;
 	int ch;
-//	int alg=0;
-//	char out[200]="/sdcard/result.html";
+	int alg=0;
+	char out[200]="/sdcard/result.html";
+	char dbName[200]="/sdcard/sscResult.db";
+	char sortcondition[300];//="ORDER BY Total_without_CA DESC";
+	char limitcondition[300];
+	memset(limitcondition,0,300);
 //	int(*sortAlg)(const void*,const void*);
 	//while((ch=getopt(argc,argv,":f:t:o:hs01234"))!=-1){
 	while((ch=getopt(argc,argv,":f:t:"))!=-1){
@@ -65,10 +73,13 @@ int main(int argc,char *argv[]){
 				to=atoi(optarg);
 				break;
 			case 's':
-/*				onlySort=1;
+				onlySort=1;
 				break;
 			case 'h':
 				help=1;
+				break;
+			case 'r':
+				reverse=1;
 				break;
 			case 'o':
 				strcpy(out,optarg);
@@ -84,7 +95,7 @@ int main(int argc,char *argv[]){
 				break;
 			case '4':
 				alg=4;
-				break;*/
+				break;
 /*			case '5':
 				alg=5;
 				break;*/
@@ -103,37 +114,59 @@ int main(int argc,char *argv[]){
         argc-=optind;
         argv+=optind;
 	if(help==1){
-		printf("ssres  -- ssc result fetcher\n\n\t-f\tfrom(roll)\n\t-t\tto(roll)\n\n");//\n\t-s\tsort currently available rawData\n\t-0\tSort based on total number without CA(default)\n\t-1\tSort based on Total number\n\t-2\tSort based on GPA\n\t-3\tSort based on name\n\t-4\tSort based on roll\n\n");
+		printf("ssres  -- ssc result fetcher\n\n\t-f\tfrom(roll)\n\t-t\tto(roll)\n\t-r\treverse sort\n\t-s\tSort only donn't download data\n\t-0\tSort based on total number without CA(default)\n\t-1\tSort based on Total number\n\t-2\tSort based on GPA\n\t-3\tSort based on name\n\t-4\tSort based on roll\n\n");
 		return 0;
 	}
-/*	switch(alg){
+	switch(alg){
 		case 0:
-			sortAlg=sortTotalNumWCA;
+			sprintf(sortcondition,"ORDER BY Total_without_CA ");
 			break;
 		case 1:
-			sortAlg=sortTotal;
+			sprintf(sortcondition,"ORDER BY Total ");
 			break;
 		case 2:
-			sortAlg=sortGPA;
+			sprintf(sortcondition,"ORDER BY GPA ");
 			break;
 		case 3:
-			sortAlg=sortName;
+			sprintf(sortcondition,"ORDER BY Name ");
 			break;
 		case 4:
-			sortAlg=sortRoll;
+			sprintf(sortcondition,"ORDER BY Roll_NO ");
 			break;
 		default:
-			sortAlg=sortTotalNumWCA;
+			sprintf(sortcondition,"ORDER BY Total_without_CA ");
 			break;
-	}*/
+	}
+	if(reverse==0)
+		strcat(sortcondition,"DESC");
+	else
+		strcat(sortcondition,"ASC");
 //	int count=0;
 //	result *rr=NULL;
 //	if(!onlySort){
 //	count=to-from+1;
 //	rr=(result*)calloc('\0',(sizeof(result)*count));
 //	remove("rawData");
+	if(from>0 || to>0){
+		if(from>0 && to >0){
+			sprintf(limitcondition,"WHERE Roll_NO >= %d and Roll_NO <= %d",from,to);
+		}
+		else if(from>0)
+			sprintf(limitcondition,"WHERE Roll_NO >= %d",from);
+		else if(to>0)
+			sprintf(limitcondition,"WHERE Roll_NO <= %d",to);
+	}
+	if(!onlySort)
+		dataGatherer(from,to);
+	outFile=fopen(out,"w");
+	if(outFile){
+		printf("Creating HTML table\n");
+		htmlStart(outFile);
+		giveResult(dbName,sortcondition,limitcondition);
+		htmlEnd(outFile);
+		fclose(outFile);
 
-	dataGatherer(from,to);
+	}
 /*	char buffer[20];
 	memset(buffer,0,20);
 	sprintf(buffer,"%d\n",count);

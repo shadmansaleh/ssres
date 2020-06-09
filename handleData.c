@@ -22,8 +22,14 @@ void  handleData(char *recvData,sqlite3 *db){
 
 	setupstruct(recvData,&res);
 	if(db)
-		writeIntoDB(&res,db);
-//	writeData(fp,&res,0);
+		if(!strcmp(res.group,"SCIENCE"))
+			writeIntoDB(&res,db);
+	if(!strcmp(res.rs,"0"))
+		fprintf(stderr,"Relegious studies empty");
+	if(!strcmp(res.hm,"0"))
+		fprintf(stderr,"Optional empty");
+
+	//	writeData(fp,&res,0);
 //	printf("%s\n",recvData);
 	return;
 }
@@ -228,10 +234,14 @@ void setupstruct(char *Data,result *res){
 	do{
 	memset(val,0,valSize);
 	if((c=getValue(Data,"HIGHER MATHEMATICS",val))!=NULL){
+/*		if(!strcmp(val,""))
+			continue;*/
 		removeGrade(val);
 		memmove(res->hm,val,strlen(val));
 	}
 	else if((c=getValue(Data,"AGRICULTURE STUDIES",val))!=NULL){
+/*		if(!strcmp(val,""))
+			continue;*/
 		removeGrade(val);
 		memmove(res->hm,val,strlen(val));
 	}/*	Data=c;
@@ -242,6 +252,8 @@ void setupstruct(char *Data,result *res){
 	do{
 	memset(val,0,valSize);
 	if((c=getValue(Data,"PHYSICAL EDUCATION, HEALTH AND SPORTS",val))!=NULL){
+/*		if(!strcmp(val,""))
+			continue;*/
 		removeGrade(val);
 		memmove(res->pehs,val,strlen(val));
 	}/*	Data=c;
@@ -252,12 +264,15 @@ void setupstruct(char *Data,result *res){
 	do{
 	memset(val,0,valSize);
 	if((c=getValue(Data,"Career Education",val))!=NULL){
+/*		if(!strcmp(val,""))
+			continue;*/
 		removeGrade(val);
 		memmove(res->cc,val,strlen(val));
 	}/*	Data=c;
 	}else{
 		c=Data;
 	}*/
+//exit(0);
 	}while(atoi(res->cc) > 100);
 	int total=0;
 	total+=getnumber(res->bangla);
@@ -318,7 +333,7 @@ void writeIntoDB(result *res,sqlite3 *db){
 	return ;
 }
 void htmlStart(FILE *fp){
-	fprintf(fp,"<!DOCTYPE html>\n\n<html>\n\n<head>\n\t<title>SSC Result</title>\n<script>\nth {\nfloat:none\nposition:relative\n}\ntd {\nfloat:none\nposition:relative\n}\n</script>\n</head>\n\n\n<body>\n\n\t<H3>SSC RESULT</H3>\n\n\t<CENTER>\n\n\t<table border=\"1\" width=\"80%%\">\n\t<tr>\n\n<th>Serial No</th>\n<th>Name</th>\n<th>Roll. No</th>\n<th>Group</th>\n<th>Inistitution</th>\n<th>GPA</th>\n<th>BANGLA</th>\n<th>ENGLISH</th>\n<th>MATHEMATICS</th>\n<th>SOCIAL STUDIES</th>\n<th>RELIGIOUS STUDIES</th>\n<th>PHYSICS</th>\n<th>CHEMESTRY</th>\n<th>BIOLOGY</th>\n<th>ICT</th>\n<th>HIGHER MATH</th>\n<th>PHYSICAL EDUCATION</th>\n<th>CAREER EDUCATION</th>\n<th>Total without CA</th>\n<th>Total</th>\n\n</tr>\n");
+	fprintf(fp,"<!DOCTYPE html>\n\n<html>\n\n<head>\n\t<title>SSC Result</title>\n<style>\nth {\ntext-align:center\n}\ntd {\ntext-align:center\n}\n</style>\n</head>\n\n\n<body>\n\n\t<H3>SSC RESULT</H3>\n\n\t<CENTER>\n\n\t<table border=\"1\" width=\"80%%\">\n\t<tr>\n\n<th>Serial No</th>\n<th>Name</th>\n<th>Roll. No</th>\n<th>Group</th>\n<th>Inistitution</th>\n<th>GPA</th>\n<th>BANGLA</th>\n<th>ENGLISH</th>\n<th>MATHEMATICS</th>\n<th>SOCIAL STUDIES</th>\n<th>RELIGIOUS STUDIES</th>\n<th>PHYSICS</th>\n<th>CHEMESTRY</th>\n<th>BIOLOGY</th>\n<th>ICT</th>\n<th>HIGHER MATH</th>\n<th>PHYSICAL EDUCATION</th>\n<th>CAREER EDUCATION</th>\n<th>Total without CA</th>\n<th>Total</th>\n\n</tr>\n");
 }
 void htmlEnd(FILE *fp){
 	fprintf(fp,"\n\n\t</table>\n\n</CENTER>\n</body>");
@@ -335,17 +350,17 @@ int getnumber(char *s){
 
 void removeGrade(char *val){
 //	printf("\n\tchanging \'%s\' to ",val);
-	char *c=val;
+	char *cpointer=val;
 	int s;
-	while(!(*(c)<='9'&& *(c)>='0')) c++;
-	if(c>val){
-		s=strlen(c);
-		memmove(val,c,s);
+	while(!(*cpointer<='9'&& *cpointer>='0')&& *cpointer!='\0') cpointer++;
+	if(cpointer>val){
+		s=strlen(cpointer);
+		memmove(val,cpointer,s);
 		*(val+s)='\0';
 	}
-	while(*(c)<='9'&& *(c)>='0') c++;
-	*c='\0';
-	if(!strcmp(val,"")){
+	while(*cpointer<='9'&& *cpointer>='0') cpointer++;
+	*cpointer='\0';
+	if(!(*val<'9'&& *val>='0')){
 		memmove(val,"0\0",2);
 	}
 //	printf("\'%s\'\n",val);
@@ -376,7 +391,7 @@ char * getValue(char *Data,char *key,char *value){
 	return NULL;
 }
 
-int callback(void *NotUsed, int argc, char **argv, char **azColName) {
+/*int callback(void *NotUsed, int argc, char **argv, char **azColName) {
    int i;
    for(i = 0; i<argc; i++) {
       printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
@@ -384,4 +399,4 @@ int callback(void *NotUsed, int argc, char **argv, char **azColName) {
    printf("\n");
    return 0;
 }
-
+*/
